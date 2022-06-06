@@ -8,6 +8,12 @@ from subsimulation import SubSimulationEnv, ContextType
 
 class MonteCarloSimulationEnv():
     def __init__(self, variables: List[Tuple[str, type, object]], n_subsimulations: int, n_steps: int) -> None:
+        """
+        Args:
+            variables (List[Tuple[str, type, object]]): List of simulation variables in the format [(variable_name, variable_type, default_value)].
+            n_subsimulations (int): Number of subsimulations.
+            n_steps (int): Number of steps per subsimulation.
+        """
         assert isinstance(n_subsimulations, int), f'Argument of \'n_subsimulations\' must be integer. Given {type(n_subsimulations)}.'
         assert n_subsimulations > 0, f'n_subsimulations must be positive. Given {n_subsimulations}.'
         assert isinstance(n_steps, int), f'Argument of \'n_steps\' must be integer. Given {type(n_steps)}.'
