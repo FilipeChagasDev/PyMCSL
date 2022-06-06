@@ -55,6 +55,9 @@ class SubSimulationEnv:
         #Creates a dictionary for states
         self._var_states = {var_name:var_default for var_name, var_type, var_default in variables}
         
+        #Creates a dictionary for ancillary objects
+        self._aux = dict()
+
     def _log_states(self):
         """Internal method. 
         Push current states in _var_states to the historic table _history.
@@ -109,11 +112,14 @@ class SubSimulationEnv:
             return setstate
 
         def _set_attribute(contextobj, var_name, var_value):
-            assert var_name in self._var_states.keys(), f'variable {var_name} does not exists.'
-            assert isinstance(var_value, self._var_types[var_name]), f'not allowed assignment of value {var_value} of type {type(var_value)} to variable {var_name} of type {self._var_types[var_name]}.'
-            assert var_name != 'past', f'past is a method, not a variable.'
-            self._var_states[var_name] = var_value
-        
+            if var_name in self._var_states.keys():
+                assert isinstance(var_value, self._var_types[var_name]), f'not allowed assignment of value {var_value} of type {type(var_value)} to variable {var_name} of type {self._var_types[var_name]}.'
+                self._var_states[var_name] = var_value
+            elif var_name in ('past', 'getattr', 'setattr'):
+                raise Exception(f'Attribute {var_name} is a method.')
+            else:
+                self._aux[var_name] = var_value
+
         def _get_attribute(contextobj, var_name):
             if var_name == 'past': #call to the past method
                 return _get_past_method(contextobj)
@@ -121,9 +127,12 @@ class SubSimulationEnv:
                 return _get_getstate_method(contextobj)
             elif var_name == 'setstate': #call to the setstate method
                 return _get_setstate_method(contextobj)
-            else:
-                assert var_name in self._var_states.keys(), f'variable {var_name} does not exists.'
+            elif var_name in self._var_states.keys(): #get variable state
                 return self._var_states[var_name]
+            elif var_name in self._aux.keys(): #get aux object
+                return self._aux[var_name]
+            else:
+                raise Exception(f'Attribute {var_name} does not exists in the context.')
 
         MyContextType = type(f'Context{id(self)}', (ContextType,), {
             '__setattr__': _set_attribute,
