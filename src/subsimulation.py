@@ -3,7 +3,6 @@ By Filipe Chagas
 June-2022
 """
 
-import re
 from typing import *
 import numpy as np
 from pandas import DataFrame
@@ -27,24 +26,24 @@ class SubSimulationEnv:
     table with the history of values of all variables.
     """
 
-    def __init__(self, variables: List[Tuple[str, type, object]], prepare_function: Callable[[ContextType], None], run_step_function: Callable[[ContextType, int], None]) -> None:
+    def __init__(self, variables: List[Tuple[str, type, object]], begin_function: Callable[[ContextType], None], step_function: Callable[[ContextType, int], None]) -> None:
         """
         Args:
             variables (List[Tuple[str, type, object]]): list of simulation variables in the format [(variable_name, variable_type, default_value)].
-            prepare_function (Callable[[ContextType], None]): function to prepare the simulation context.
-            run_step_function (Callable[[ContextType, int], None]): function to run the simulation steps.
+            begin_function (Callable[[ContextType], None]): function to prepare the simulation context before the first step.
+            step_function (Callable[[ContextType, int], None]): function to run the simulation steps.
         """
         assert isinstance(variables, list), f'Argument of \'variables\' must be a list, but a {type(variables)} object was received.'
         assert all([isinstance(var_name, str) for var_name, var_type, var_default in variables]), f'\'variables\' list must be in the format [(string, type, object)].'
         assert all([isinstance(var_type, type) for var_name, var_type, var_default in variables]), f'\'variables\' list must be in the format [(string, type, object)].'
         assert all([isinstance(var_default, var_type) for var_name, var_type, var_default in variables]), f'Some default value in \'variables\' list does not correspond to its variable\'s type.'
         assert all([var_name not in ('past', 'getstate', 'setstate') for var_name, var_type, var_default in variables]), 'Names \'past\', \'getstate\' and \'setstate\' are internally reserved and forbidden for variables.'
-        assert isinstance(prepare_function, Callable), f'Argument of \'prepare_function\' must be a Callable, but a {type(prepare_function)} object was received.'
-        assert isinstance(run_step_function, Callable), f'Argument of \'run_step_function\' must be a Callable, but a {type(run_step_function)} object was received.'
+        assert isinstance(begin_function, Callable), f'Argument of \'begin_function\' must be a Callable, but a {type(begin_function)} object was received.'
+        assert isinstance(step_function, Callable), f'Argument of \'step_function\' must be a Callable, but a {type(step_function)} object was received.'
 
         self._variables = variables
-        self._prepare_function = prepare_function
-        self._run_step_function = run_step_function
+        self._begin_function = begin_function
+        self._step_function = step_function
         self._steps_taken = 0
         
         #build a dictionary for mapping variable's types
@@ -135,10 +134,10 @@ class SubSimulationEnv:
 
     def _prepare(self):
         """Internal method.
-        Calls the simulation preparing callback.
+        Calls the simulation beginning callback.
         """
         context = self._get_context_obj()
-        self._prepare_function(context)
+        self._begin_function(context)
 
     def _run_step(self, step: int):
         """Internal method.
@@ -147,7 +146,7 @@ class SubSimulationEnv:
             step (int): step number.
         """
         context = self._get_context_obj()
-        self._run_step_function(context, step)
+        self._step_function(context, step)
 
     def run_steps(self, n: int):
         """Run 'n' steps of the simulation.
