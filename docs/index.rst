@@ -10,7 +10,7 @@ Welcome to PyMCSL's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-markovchain
+   markovchain
 
 Indices and tables
 ==================
