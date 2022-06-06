@@ -6,7 +6,7 @@ import sys
 sys.path.append('./lib')
 
 from typing import *
-from markovchain import ConstProbMarkovChain
+from markovchain import SimpleMarkovChain
 from montecarlosimulation import MonteCarloSimulationEnv
 from enum import Enum
 
@@ -18,7 +18,7 @@ STATE3 = 2
 
 @env.subsim_begin()
 def beginf(context):
-    context.chain = ConstProbMarkovChain(
+    context.chain = SimpleMarkovChain(
         states = [STATE1, STATE2, STATE3],
         transitions = [
             (STATE1, STATE2, 1),
