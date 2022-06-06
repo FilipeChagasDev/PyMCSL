@@ -45,6 +45,7 @@ class MonteCarloSimulationEnv():
         self._subsim_step_function = None
         self._subsim_envs = None
 
+    @property
     def subsim_begin(self) -> Callable:
         """Returns a decorator that subscribes a function as the beginning function of all subsimulations.
 
@@ -56,6 +57,7 @@ class MonteCarloSimulationEnv():
             return function
         return wrapped
 
+    @property
     def subsim_step(self) -> Callable:
         """Returns a decorator that subscribes a function as the step-function of all subsimulations.
 
@@ -66,6 +68,24 @@ class MonteCarloSimulationEnv():
             self._subsim_step_function = function
             return function
         return wrapped
+
+    def set_subsim_begin_callback(self, f: Callable[[ContextType], None]):
+        """Subscribes a function as the begin-function of all subsimulations.
+
+        Args:
+            f (Callable[[ContextType], None]): callback function.
+        """
+        assert isinstance(f, Callable)
+        self._subsim_begin_function = f
+    
+    def set_subsim_step_callback(self, f: Callable[[ContextType], None]):
+        """Subscribes a function as the step-function of all subsimulations.
+
+        Args:
+            f (Callable[[ContextType], None]): callback function.
+        """
+        assert isinstance(f, Callable)
+        self._subsim_step_function = f
 
     def run(self, show_progress: bool = True):
         """Run all the independent subsimulations.

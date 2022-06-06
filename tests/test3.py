@@ -16,7 +16,7 @@ STATE1 = 0
 STATE2 = 1
 STATE3 = 2
 
-@env.subsim_begin()
+@env.subsim_begin
 def beginf(context):
     context.chain = SimpleMarkovChain(
         states = [STATE1, STATE2, STATE3],
@@ -31,7 +31,7 @@ def beginf(context):
 
     context.x = context.chain.state
 
-@env.subsim_step()
+@env.subsim_step
 def stepf(context, step):
     context.chain.foward()
     context.x = context.chain.state

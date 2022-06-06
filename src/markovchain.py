@@ -16,7 +16,17 @@ def first_or_default(l: List, f: Callable[[Any], bool], default: Any = None) -> 
     return default
 
 class SimpleMarkovChain():
-    def __init__(self, states: List[StateType], transitions: List[Tuple[StateType, StateType, WeightType]], initial_state: object) -> None:
+    """
+    Simple Markov Chain simulator.
+    """
+
+    def __init__(self, states: List[StateType], transitions: List[Tuple[StateType, StateType, WeightType]], initial_state: StateType) -> None:
+        """
+        Args:
+            states (List[StateType]): List of states (StateType=Union[str, int, float]).
+            transitions (List[Tuple[StateType, StateType, WeightType]]): List of transitions. Each transition is a tuple in the format (state1, state2, weight), where state1 is the initial state, state2 is the final state and weight is a value proportional to the transition probability.
+            initial_state (StateType): Initial state.
+        """
         assert isinstance(states, list), f'\'states\' must be a list. Given {type(states)}.'
         assert isinstance(transitions, list), f'\'transitions\' must be a list. Given {type(transitions)}.'
         assert all([isinstance(state, (str, int, float)) for state in states]), f'All states must be string, integer or float.'
@@ -33,9 +43,18 @@ class SimpleMarkovChain():
         self._state = initial_state
     
     @property
-    def state(self):
+    def state(self) -> StateType:
+        """
+        Returns:
+            StateType: current state.
+        """
         return self._state
 
-    def foward(self):
+    def foward(self) -> StateType:
+        """
+        Do a transition.
+        Returns:
+            StateType: state after the transition.
+        """
         self._state = choices(self._states, self._transition_weights[self._state])[0]
         return self._state
