@@ -3,6 +3,7 @@ By Filipe Chagas
 June-2022
 """
 
+import re
 from typing import *
 import numpy as np
 from pandas import DataFrame
@@ -163,6 +164,38 @@ class SubSimulationEnv:
             self._log_states()
             self._steps_taken += 1
 
+    def get_history(self) -> Dict[str, List]:
+        """Get a copy of the historic dictionary.
+
+        Returns:
+            Dict[str, List]: historic dictionary in the format {variable_name: variable_history}.
+        """
+        return {var_name: self._history[var_name].copy() for var_name in self._history.keys()}
+
+    def get_variable_history(self, var_name: str) -> List:
+        """Get a copy of the historic of a single variable.
+
+        Args:
+            var_name (str): variable's name.
+
+        Returns:
+            List: variable's states history.
+        """
+        assert isinstance(var_name, str), f'Argument of var_name must be string. Given {type(var_name)}.'
+        assert var_name in self._history.keys(), f'Variable {var_name} does not exists.'
+        return self._history[var_name].copy()
+
+    def get_variable_numpy_history(self, var_name: str) -> np.ndarray:
+        """Get the historic of a single variable as a NumPy array.
+
+        Args:
+            var_name (str): variable's name.
+
+        Returns:
+            np.ndarray: variable's states history.
+        """
+        return np.array(self.get_variable_history(var_name))
+
     def get_history_dataframe(self) -> DataFrame:
         """Get variables history as a Pandas Dataframe. 
 
@@ -175,6 +208,6 @@ class SubSimulationEnv:
         """Get variables history as a dictionary of NumPy arrays.
 
         Returns:
-            Dict[str, np.ndarray]: variables history.
+            Dict[str, np.ndarray]: variables history in the format {variable_name: variable_history}.
         """
         return {var_name:np.array(self._history[var_name]) for var_name in self._history.keys()}
