@@ -4,6 +4,7 @@ June-2022
 """
 
 from typing import *
+from xmlrpc.client import Boolean
 from subsimulation import SubSimulationEnv, ContextType
 
 class MonteCarloSimulationEnv():
@@ -66,10 +67,13 @@ class MonteCarloSimulationEnv():
             return function
         return wrapped
 
-    def run(self):
+    def run(self, show_progress: bool = True):
         """Run all the independent subsimulations.
         """
+        if show_progress:
+            from tqdm import tqdm
+        
         self._subsim_envs = [SubSimulationEnv(self._variables, self._subsim_begin_function, self._subsim_step_function) for i in range(self._n_subsims)]
         
-        for env in self._subsim_envs:
+        for env in tqdm(self._subsim_envs) if show_progress else self._subsim_envs:
             env.run_steps(self._n_steps)
