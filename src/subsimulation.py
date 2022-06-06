@@ -29,9 +29,9 @@ class SubSimulationEnv:
     def __init__(self, variables: List[Tuple[str, type, object]], begin_function: Callable[[ContextType], None], step_function: Callable[[ContextType, int], None]) -> None:
         """
         Args:
-            variables (List[Tuple[str, type, object]]): list of simulation variables in the format [(variable_name, variable_type, default_value)].
-            begin_function (Callable[[ContextType], None]): function to prepare the simulation context before the first step.
-            step_function (Callable[[ContextType, int], None]): function to run the simulation steps.
+            variables (List[Tuple[str, type, object]]): List of simulation variables in the format [(variable_name, variable_type, default_value)].
+            begin_function (Callable[[ContextType], None]): Function to prepare the simulation context before the first step.
+            step_function (Callable[[ContextType, int], None]): Function to run the simulation steps.
         """
         assert isinstance(variables, list), f'Argument of \'variables\' must be a list, but a {type(variables)} object was received.'
         assert all([isinstance(var_name, str) for var_name, var_type, var_default in variables]), f'\'variables\' list must be in the format [(string, type, object)].'
