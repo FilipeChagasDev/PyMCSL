@@ -2,13 +2,10 @@
 By Filipe Chagas
 June-2022
 """
-import sys
-sys.path.append('./lib')
 
 from typing import *
-from markovchain import SimpleMarkovChain
-from montecarlosimulation import MonteCarloSimulationEnv
 from enum import Enum
+from pymcsl import MonteCarloSimulationEnv, SimpleMarkovChain
 
 env = MonteCarloSimulationEnv([('x', int, 0)], 10, 10)
 

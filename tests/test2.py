@@ -1,15 +1,12 @@
-import sys
-sys.path.append('./lib')
+from pymcsl import MonteCarloSimulationEnv
 
-import montecarlosimulation as mcs
+env = MonteCarloSimulationEnv([('x', int, 0)],10,10)
 
-env = mcs.MonteCarloSimulationEnv([('x', int, 0)],10,10)
-
-@env.subsim_begin()
+@env.subsim_begin
 def beginf(context):
     context.x = 0
 
-@env.subsim_step()
+@env.subsim_step
 def stepf(context, step):
     context.x += 1
 

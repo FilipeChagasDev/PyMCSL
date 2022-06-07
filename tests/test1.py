@@ -1,7 +1,4 @@
-import sys
-sys.path.append('./lib')
-
-from subsimulation import SubSimulationEnv
+from pymcsl import SubSimulationEnv
 
 def prepare(context):
     print('---prepare---', type(context))
