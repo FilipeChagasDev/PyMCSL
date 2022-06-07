@@ -6,16 +6,20 @@
 Welcome to PyMCSL's documentation!
 ==================================
 
+PyMCSL (Python Monte Carlo Simulation Library) is a package designed to facilitate the implementation of Monte Carlo simulations. PyMCSL creates multi-step simulation environments, handling internally with running the simulations and compiling the results and enabling Monte Carlo simulations to be implemented with clean and easy to understand code.
+
+Articles and tutorials
+----------------------
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   basic_notions_and_ideas
 
 Modules
-=======
+-------
 
 .. toctree::
    :maxdepth: 4
 
-   markovchain
-   montecarlosimulation
-   subsimulation
+   pymcsl

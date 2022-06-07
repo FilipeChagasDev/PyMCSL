@@ -16,7 +16,7 @@ STATE3 = 2
 @env.subsim_begin
 def beginf(context):
     context.chain = SimpleMarkovChain(
-        states = [STATE1, STATE2, STATE3],
+        states = {STATE1, STATE2, STATE3},
         transitions = [
             (STATE1, STATE2, 1),
             (STATE2, STATE1, 1),
