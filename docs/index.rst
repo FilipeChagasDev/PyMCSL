@@ -9,8 +9,7 @@ Welcome to PyMCSL's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   markovchain
+   modules
 
 Indices and tables
 ==================
