@@ -85,6 +85,9 @@ class MonteCarloSimulationEnv():
         :param show_progress: Enable progress bar, defaults to True
         :type show_progress: bool, optional
         """
+        assert isinstance(self._subsim_begin_function, Callable), 'Begin callback is not defined.'
+        assert isinstance(self._subsim_step_function, Callable), 'Step callback is not defined.'
+        
         if show_progress:
             from tqdm import tqdm
         
@@ -92,3 +95,5 @@ class MonteCarloSimulationEnv():
         
         for env in tqdm(self._subsim_envs) if show_progress else self._subsim_envs:
             env.run_steps(self._n_steps)
+
+    
