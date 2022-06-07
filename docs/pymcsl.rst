@@ -4,10 +4,10 @@ pymcsl package
 Submodules
 ----------
 
-pymcsl.markovchain module
--------------------------
+pymcsl.subsimulation module
+---------------------------
 
-.. automodule:: pymcsl.markovchain
+.. automodule:: pymcsl.subsimulation
    :members:
    :undoc-members:
    :show-inheritance:
@@ -20,10 +20,18 @@ pymcsl.montecarlosimulation module
    :undoc-members:
    :show-inheritance:
 
-pymcsl.subsimulation module
----------------------------
+pymcsl.markovchain module
+-------------------------
 
-.. automodule:: pymcsl.subsimulation
+.. automodule:: pymcsl.markovchain
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcsl.randomvariable module
+----------------------------
+
+.. automodule:: pymcsl.randomvariable
    :members:
    :undoc-members:
    :show-inheritance:
