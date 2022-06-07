@@ -4,29 +4,21 @@ June-2022
 """
 
 from typing import *
-from xmlrpc.client import Boolean
 from subsimulation import SubSimulationEnv, ContextType
 
 class MonteCarloSimulationEnv():
     """
-    The MonteCarloSimulationEnv class provides a clean code base to facilitate 
-    the implementation of Monte Carlo simulations. The MonteCarloSimulationEnv 
-    object performs a series of independent sub-simulations under the same 
-    conditions. Subsimulations have a set of variables (each with a name, a data 
-    type, and a default value), a beginning function that is executed at the 
-    beginning of the simulation, and a step function that is executed at each 
-    step of the simulation. The begin and step functions receive a ContextType 
-    object that gives access to the current mutable states of the subsimulation 
-    as well as the read-only past states. The state history of the variables is
-    recorded and can be obtained in a report after the simulation.
+    The MonteCarloSimulationEnv class provides a clean code base to facilitate the implementation of Monte Carlo simulations. The MonteCarloSimulationEnv object performs a series of independent sub-simulations under the same conditions. Subsimulations have a set of variables (each with a name, a data type, and a default value), a beginning function that is executed at the beginning of the simulation, and a step function that is executed at each step of the simulation. The begin and step functions receive a ContextType object that gives access to the current mutable states of the subsimulation as well as the read-only past states. The state history of the variables is recorded and can be obtained in a report after the simulation.
     """
     
     def __init__(self, variables: List[Tuple[str, type, object]], n_subsimulations: int, n_steps: int) -> None:
         """
-        Args:
-            variables (List[Tuple[str, type, object]]): List of simulation variables in the format [(variable_name, variable_type, default_value)].
-            n_subsimulations (int): Number of subsimulations.
-            n_steps (int): Number of steps per subsimulation.
+        :param variables: List of simulation variables in the format [(variable_name, variable_type, default_value)].
+        :type variables: List[Tuple[str, type, object]]
+        :param n_subsimulations: Number of subsimulations.
+        :type n_subsimulations: int
+        :param n_steps: Number of steps per subsimulation.
+        :type n_steps: int
         """
         assert isinstance(n_subsimulations, int), f'Argument of \'n_subsimulations\' must be integer. Given {type(n_subsimulations)}.'
         assert n_subsimulations > 0, f'n_subsimulations must be positive. Given {n_subsimulations}.'
@@ -49,8 +41,8 @@ class MonteCarloSimulationEnv():
     def subsim_begin(self) -> Callable:
         """Returns a decorator that subscribes a function as the beginning function of all subsimulations.
 
-        Returns:
-            Callable: Wrapped decorator.
+        :return: Wrapped decorator.
+        :rtype: Callable
         """
         def wrapped(function: Callable[[ContextType], None]) -> Callable:
             self._subsim_begin_function = function
@@ -61,8 +53,8 @@ class MonteCarloSimulationEnv():
     def subsim_step(self) -> Callable:
         """Returns a decorator that subscribes a function as the step-function of all subsimulations.
 
-        Returns:
-            Callable: Wrapped decorator.
+        :return: Wrapped decorator.
+        :rtype: Callable
         """
         def wrapped(function: Callable[[ContextType], None]) -> Callable:
             self._subsim_step_function = function
@@ -72,8 +64,8 @@ class MonteCarloSimulationEnv():
     def set_subsim_begin_callback(self, f: Callable[[ContextType], None]):
         """Subscribes a function as the begin-function of all subsimulations.
 
-        Args:
-            f (Callable[[ContextType], None]): callback function.
+        :param f: Callback function.
+        :type f: Callable[[ContextType], None]
         """
         assert isinstance(f, Callable)
         self._subsim_begin_function = f
@@ -81,14 +73,17 @@ class MonteCarloSimulationEnv():
     def set_subsim_step_callback(self, f: Callable[[ContextType], None]):
         """Subscribes a function as the step-function of all subsimulations.
 
-        Args:
-            f (Callable[[ContextType], None]): callback function.
+        :param f: Callback function.
+        :type f: Callable[[ContextType], None]
         """
         assert isinstance(f, Callable)
         self._subsim_step_function = f
 
     def run(self, show_progress: bool = True):
         """Run all the independent subsimulations.
+
+        :param show_progress: Enable progress bar, defaults to True
+        :type show_progress: bool, optional
         """
         if show_progress:
             from tqdm import tqdm

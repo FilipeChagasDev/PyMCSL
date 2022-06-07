@@ -20,8 +20,7 @@ class SimpleMarkovChain():
     """
 
     def __init__(self, states: List[StateType], transitions: List[Tuple[StateType, StateType, WeightType]], initial_state: StateType) -> None:
-        """SimpleMarkovChain initializer method.
-
+        """
         :param states: List of states.
         :type states: List[StateType], where StateType=Union[str, int, float]
         :param transitions: List of transitions. Each transition is a tuple in the format (state1, state2, weight), where state1 is the initial state, state2 is the final state and weight is a value proportional to the transition probability.

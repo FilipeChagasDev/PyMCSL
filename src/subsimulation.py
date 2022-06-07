@@ -16,22 +16,17 @@ def raise_read_only_exception(p1,p2,p3):
 
 class SubSimulationEnv:
     """
-    The SubSimulationEnv class provides a basic framework for a multi-step 
-    simulation. The subsimulation has a set of variables, each with a name, 
-    a data type, and a default value. In each step of the simulation, a 
-    callback function is called receiving the current step number and a
-    ContextType object with all the variables, being able to change the
-    current states of the variables through this object. At the end of each
-    simulation step, the current states of the variables are recorded in a 
-    table with the history of values of all variables.
+    The SubSimulationEnv class provides a basic framework for a multi-step simulation. The subsimulation has a set of variables, each with a name, a data type, and a default value. In each step of the simulation, a callback function is called receiving the current step number and a ContextType object with all the variables, being able to change the current states of the variables through this object. At the end of each simulation step, the current states of the variables are recorded in a table with the history of values of all variables.
     """
 
     def __init__(self, variables: List[Tuple[str, type, object]], begin_function: Callable[[ContextType], None], step_function: Callable[[ContextType, int], None]) -> None:
         """
-        Args:
-            variables (List[Tuple[str, type, object]]): List of simulation variables in the format [(variable_name, variable_type, default_value)].
-            begin_function (Callable[[ContextType], None]): Function to prepare the simulation context before the first step.
-            step_function (Callable[[ContextType, int], None]): Function to run the simulation steps.
+        :param variables: List of simulation variables in the format [(variable_name, variable_type, default_value)].
+        :type variables: List[Tuple[str, type, object]]
+        :param begin_function: Function to prepare the simulation context before the first step.
+        :type begin_function: Callable[[ContextType], None]
+        :param step_function: Function to run the simulation steps.
+        :type step_function: Callable[[ContextType, int], None]
         """
         assert isinstance(variables, list), f'Argument of \'variables\' must be a list, but a {type(variables)} object was received.'
         assert all([isinstance(var_name, str) for var_name, var_type, var_default in variables]), f'\'variables\' list must be in the format [(string, type, object)].'
@@ -58,6 +53,65 @@ class SubSimulationEnv:
         #Creates a dictionary for ancillary objects
         self._aux = dict()
 
+    @property
+    def variables_names(self) -> List[str]:
+        """
+        :return: List with all variables names.
+        :rtype: List[str]
+        """
+        return [var_name for var_name, var_type, var_default in self._variables]
+
+    @property
+    def variables_types(self) -> Dict[str, type]:
+        """Returns a dictionary with all variables types.
+
+        :return: Dictionary in the format {variable_name: variable_type}.
+        :rtype: Dict[str, type]
+        """
+        return self._var_types.copy()
+
+    @property
+    def variables_states(self) -> Dict[str, Any]:
+        """Returns a dictionary with all variables states.
+
+        :return: Dictionary in the format {variable_name: variable_state}.
+        :rtype: Dict[str, Any]
+        """
+        return self._var_states.copy()
+
+    @property
+    def auxiliary_objects(self) -> Dict[str, Any]:
+        """Returns a dictionary with all the auxiliary objects.
+
+        :return: Dictionary in the format {attribute_name: object}.
+        :rtype: Dict[str, Any]
+        """
+        return self._aux.copy()
+
+    def get_variable_type(self, var_name: str) -> type:
+        """Returns the type of a specific variable.
+
+        :param var_name: Variable name.
+        :type var_name: str
+        :return: Variable type.
+        :rtype: type
+        """
+        assert isinstance(var_name, str)
+        assert var_name in self._var_types.keys(), f'Variable {var_name} does not exists in this context.'
+        return self._var_types[var_name]
+
+    def get_variable_state(self, var_name: str) -> Any:
+        """Returns the state of a specific variable.
+
+        :param var_name: Variable name.
+        :type var_name: str
+        :return: Variable state.
+        :rtype: Any
+        """
+        assert isinstance(var_name, str)
+        assert var_name in self._var_states.keys(), f'Variable {var_name} does not exists in this context.'
+        return self._var_states[var_name]
+    
     def _log_states(self):
         """Internal method. 
         Push current states in _var_states to the historic table _history.
@@ -160,8 +214,8 @@ class SubSimulationEnv:
     def run_steps(self, n: int):
         """Run 'n' steps of the simulation.
 
-        Args:
-            n (int): number of steps.
+        :param n: Number of steps.
+        :type n: int
         """
         assert isinstance(n, int)
         assert n > 0
@@ -173,49 +227,47 @@ class SubSimulationEnv:
             self._steps_taken += 1
 
     def get_history(self) -> Dict[str, List]:
-        """Get a copy of the historic dictionary.
+        """Returns a copy of the historic dictionary.
 
-        Returns:
-            Dict[str, List]: historic dictionary in the format {variable_name: variable_history}.
+        :return: historic dictionary in the format {variable_name: variable_history}.
+        :rtype: Dict[str, List]
         """
         return {var_name: self._history[var_name].copy() for var_name in self._history.keys()}
 
     def get_variable_history(self, var_name: str) -> List:
-        """Get a copy of the historic of a single variable.
+        """Get a copy of the historic of a specific variable.
 
-        Args:
-            var_name (str): variable's name.
-
-        Returns:
-            List: variable's states history.
+        :param var_name: variable name.
+        :type var_name: str
+        :return: variable state history.
+        :rtype: List
         """
         assert isinstance(var_name, str), f'Argument of var_name must be string. Given {type(var_name)}.'
         assert var_name in self._history.keys(), f'Variable {var_name} does not exists.'
         return self._history[var_name].copy()
 
     def get_variable_numpy_history(self, var_name: str) -> np.ndarray:
-        """Get the historic of a single variable as a NumPy array.
+        """Get the historic of a specific variable as a NumPy array.
 
-        Args:
-            var_name (str): variable's name.
-
-        Returns:
-            np.ndarray: variable's states history.
+        :param var_name: variable's name.
+        :type var_name: str
+        :return: variable state history.
+        :rtype: np.ndarray
         """
         return np.array(self.get_variable_history(var_name))
 
     def get_history_dataframe(self) -> DataFrame:
-        """Get variables history as a Pandas Dataframe. 
+        """Get variables history as a Pandas DataFrame.
 
-        Returns:
-            DataFrame: variables history dataframe.
+        :return: historic DataFrame.
+        :rtype: DataFrame
         """
         return DataFrame(self._history)
-
+   
     def get_numpy_history(self) -> Dict[str, np.ndarray]:
         """Get variables history as a dictionary of NumPy arrays.
 
-        Returns:
-            Dict[str, np.ndarray]: variables history in the format {variable_name: variable_history}.
+        :return: variables history in the format {variable_name: variable_history}.
+        :rtype: Dict[str, np.ndarray]
         """
         return {var_name:np.array(self._history[var_name]) for var_name in self._history.keys()}
