@@ -8,7 +8,8 @@ from subsimulation import SubSimulationEnv, ContextType
 
 class MonteCarloSimulationEnv():
     """
-    The MonteCarloSimulationEnv class provides a clean code base to facilitate the implementation of Monte Carlo simulations. The MonteCarloSimulationEnv object performs a series of independent sub-simulations under the same conditions. Subsimulations have a set of variables (each with a name, a data type, and a default value), a beginning function that is executed at the beginning of the simulation, and a step function that is executed at each step of the simulation. The begin and step functions receive a ContextType object that gives access to the current mutable states of the subsimulation as well as the read-only past states. The state history of the variables is recorded and can be obtained in a report after the simulation.
+    The MonteCarloSimulationEnv class provides a code base to facilitate the implementation of Monte Carlo simulations.
+    The MonteCarloSimulationEnv class performs a series of independent subsimulations under the same conditions.
     """
     
     def __init__(self, variables: List[Tuple[str, type, object]], n_subsimulations: int, n_steps: int) -> None:

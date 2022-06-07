@@ -16,7 +16,8 @@ def _first_or_default(l: List, f: Callable[[Any], bool], default: Any = None) ->
     return default
 
 class SimpleMarkovChain():
-    """Simple Markov Chain simulator.
+    """Markov Chains are graphs that represent stochastic processes based on random state transitions.
+    The SimpleMarkovChain class is a Markov Chain simulator with constant transition probabilities.
     """
 
     def __init__(self, states: Set[StateType], transitions: List[Tuple[StateType, StateType, WeightType]], initial_state: StateType) -> None:

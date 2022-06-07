@@ -16,7 +16,8 @@ def _raise_read_only_exception(p1,p2,p3):
 
 class SubSimulationEnv:
     """
-    The SubSimulationEnv class provides a basic framework for a multi-step simulation. The subsimulation has a set of variables, each with a name, a data type, and a default value. In each step of the simulation, a callback function is called receiving the current step number and a ContextType object with all the variables, being able to change the current states of the variables through this object. At the end of each simulation step, the current states of the variables are recorded in a table with the history of values of all variables.
+    The SubSimulationEnv class has a basic framework to simulate a stochastic process.
+    The subsimulation environment has a set of variables (each with a name, a type, and a default value), a callback function to start the simulation, and a callback function to run the simulation steps. The history of variable states is stored in the environment after the simulation.
     """
 
     def __init__(self, variables: List[Tuple[str, type, object]], begin_function: Callable[[ContextType], None], step_function: Callable[[ContextType, int], None]) -> None:

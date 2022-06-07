@@ -7,7 +7,7 @@ from typing import *
 from random import choices
 
 class DiscreteRandomVariable():
-    """Random variables are variables that give unpredictable results. 
+    """Random Variables are variables that give unpredictable outcomes. 
     Discrete random variables have an alphabet, which is a set of possible outcomes, and a outcoming probability associated with each value in the alphabet. The act of getting a outcome from a random variable is called 'evaluation'.
     """
     def __init__(self, alphabet_and_weights: Dict[Union[str, int, float], Union[int, float]]):

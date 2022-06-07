@@ -16,10 +16,11 @@ Articles and tutorials
 
    basic_notions_and_ideas
 
-Modules
+Classes
 -------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
 
-   pymcsl
+   basic_classes
+   aux_classes
