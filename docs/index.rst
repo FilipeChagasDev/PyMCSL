@@ -9,13 +9,3 @@ Welcome to PyMCSL's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-Modules
-=======
-
-.. toctree::
-   :maxdepth: 4
-
-   markovchain
-   montecarlosimulation
-   subsimulation
