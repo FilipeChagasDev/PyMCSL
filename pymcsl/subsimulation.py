@@ -11,7 +11,7 @@ class ContextType():
     def __init__(self) -> None:
         pass
 
-def raise_read_only_exception(p1,p2,p3):
+def _raise_read_only_exception(p1,p2,p3):
     raise Exception('Attributes of a past context are all read-only')
 
 class SubSimulationEnv:
@@ -138,7 +138,7 @@ class SubSimulationEnv:
                 assert n < self._steps_taken, f'The value of the \'n\' parameter in the \'past\' method must be less than the number of steps taken ({self._steps_taken}), but n={n}.'
                 
                 past_context_content = {var_name:self._history[var_name][-n] for var_name in self._history.keys()}
-                past_context_content['__setattr__'] = raise_read_only_exception
+                past_context_content['__setattr__'] = _raise_read_only_exception
                 
                 MyReadOnlyContextType = type(f'ReadOnlyContext{id(contextobj)}', (ContextType,), past_context_content)
 
