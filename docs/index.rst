@@ -9,11 +9,13 @@ Welcome to PyMCSL's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   modules
 
-Indices and tables
-==================
+Modules
+=======
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 4
+
+   markovchain
+   montecarlosimulation
+   subsimulation
