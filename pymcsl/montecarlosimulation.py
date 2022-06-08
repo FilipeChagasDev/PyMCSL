@@ -293,7 +293,7 @@ class MonteCarloSimulationEnv():
 
     def get_variable_histories(self, var_name: str) -> np.ndarray:
         """Returns an array with all the outcomes that a variable had throughout the simulation. 
-        The 0-axis indices are the steps and the 1-axis indices are the subsimulations.
+        The 0-axis indices are the subsimulations and the 1-axis indices are the steps.
 
         :param var_name: Variable name.
         :type var_name: str
