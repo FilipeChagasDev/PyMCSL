@@ -263,7 +263,7 @@ class MonteCarloSimulationEnv():
         hist = [self._subsim_envs[i].get_variable_numpy_history(var_name) for i in range(self._n_subsims)]
         return np.sum(hist, axis=(0 if domain == 'step' else 1)).astype(np.float) if domain != None else np.sum(hist).astype(np.float)
 
-    def get_variable_histogram(self, var_name: str, n_bins: int, density: bool = False) -> np.ndarray:
+    def get_variable_histogram(self, var_name: str, n_bins: int, density: bool = False, _range: Union[Tuple[float, float], None] = None) -> np.ndarray:
         """Returns an array with a histogram of the variable for each step of the simulation.
         The 0-axis indexes are the domain values (step indexes or subsim indexes).
 
@@ -273,6 +273,8 @@ class MonteCarloSimulationEnv():
         :type n_bins: int
         :param density: Set to true so histograms are density instead of counts. defaults to False
         :type density: bool, optional
+        :param _range: defines manually the range (min, max) of the histogram. Default to None.
+        :type _range: Union[Tuple[float, float], None], optional
         :return: Array of histograms.
         :rtype: np.ndarray
         """
@@ -285,8 +287,9 @@ class MonteCarloSimulationEnv():
     
         vhistories = [self._subsim_envs[i].get_variable_numpy_history(var_name) for i in range(self._n_subsims)]
         vhistories = np.array(vhistories)
-        vmax = np.max(vhistories)
-        vmin = np.min(vhistories)
+        
+        vmax = np.max(vhistories) if _range == None else _range[1]
+        vmin = np.min(vhistories) if _range == None else _range[0]
 
         vhistogram = [np.histogram(vhistories[:,i], bins=n_bins, range=(vmin, vmax), density=density)[0]  for i in range(vhistories.shape[1])]
         return np.array(vhistogram).astype(np.float)
