@@ -202,14 +202,14 @@ class MonteCarloSimulationEnv():
 
     def get_variable_min(self, var_name: str, domain: str = 'step') -> Union[np.ndarray, np.float]:
         """
-        Calculates the minimun of a variable. 
+        Calculates the minimum of a variable. 
         The 0-axis indexes are the domain values (step indexes or subsim indexes).
         
         :param var_name: Variable name.
         :type var_name: str
-        :param domain: If domain='step', a minimun for each step is calculated; if domain='subsim', a minimun for each subsimulation is calculated, and if domain=None, the overall minimun is calculated, defaults to 'step'
+        :param domain: If domain='step', a minimum for each step is calculated; if domain='subsim', a minimum for each subsimulation is calculated, and if domain=None, the overall minimum is calculated, defaults to 'step'
         :type domain: str, optional
-        :return: An array with a minimun for each domain value (step or subsim), or an overall minimun.
+        :return: An array with a minimum for each domain value (step or subsim), or an overall minimum.
         :rtype: Union[np.ndarray, np.float]
         """
         assert isinstance(var_name, str), 'var_name must be string.'
@@ -223,14 +223,14 @@ class MonteCarloSimulationEnv():
 
     def get_variable_max(self, var_name: str, domain: str = 'step') -> Union[np.ndarray, np.float]:
         """
-        Calculates the maximun of a variable. 
+        Calculates the maximum of a variable. 
         The 0-axis indexes are the domain values (step indexes or subsim indexes).
 
         :param var_name: Variable name.
         :type var_name: str
-        :param domain: If domain='step', a maximun for each step is calculated; if domain='subsim', a maximun for each subsimulation is calculated, and if domain=None, the overall maximun is calculated, defaults to 'step'
+        :param domain: If domain='step', a maximum for each step is calculated; if domain='subsim', a maximum for each subsimulation is calculated, and if domain=None, the overall maximum is calculated, defaults to 'step'
         :type domain: str, optional
-        :return: An array with a maximun for each domain value (step or subsim), or an overall maximun.
+        :return: An array with a maximum for each domain value (step or subsim), or an overall maximum.
         :rtype: Union[np.ndarray, np.float]
         """
         assert isinstance(var_name, str), 'var_name must be string.'
