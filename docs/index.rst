@@ -15,8 +15,8 @@ Articles and tutorials
    :maxdepth: 2
 
    basic_notions_and_ideas
-   tutorials/galtonboard
-   tutorials/markovchain
+   examples/galtonboard
+   examples/markovchain
 
 Classes
 -------
