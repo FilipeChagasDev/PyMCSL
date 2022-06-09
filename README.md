@@ -126,4 +126,5 @@ if __name__ == '__main__':
 ```
 
 Output:
+
 ![galtonboard_graph](docs/imgs/examples_galtonboard_9_1.png)
