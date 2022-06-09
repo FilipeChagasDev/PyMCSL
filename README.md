@@ -3,6 +3,7 @@
 ![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)
 ![Github License](https://img.shields.io/github/license/FilipeChagasDev/PyMCSL)
 ![Github tag](https://img.shields.io/github/v/tag/FilipeChagasDev/PyMCSL)
+[![DOI](https://zenodo.org/badge/500016774.svg)](https://zenodo.org/badge/latestdoi/500016774)
 
 By Filipe Chagas, 2022
 
