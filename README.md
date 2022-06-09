@@ -61,3 +61,69 @@ if __name__ == '__main__':
   code to be executed after the simulation.
   """
 ```
+
+## Examples
+
+### Galton Board
+
+[see the tutorial](https://pymcsl.readthedocs.io/en/latest/examples/galtonboard.html)
+
+![Galton Board gif](https://64.media.tumblr.com/02df8ba13155a78eab4bfb054d195684/tumblr_p5wrk7ZIYX1w6skpso1_500.gifv)
+
+Code:
+
+```python
+import pymcsl as mcs
+import numpy as np
+import matplotlib.pyplot as plt
+
+#One subsimulation for each ball
+N_SUBSIMULATIONS = 1000
+
+#One step for each row of pegs
+N_STEPS = 100
+
+env = mcs.MonteCarloSimulationEnv(
+    variables=[
+        #(name, type, default value)
+        ('x', int, 0) #horizontal position of the ball 
+    ],
+    n_subsimulations = N_SUBSIMULATIONS, 
+    n_steps = N_STEPS 
+)
+
+LEFT = -1
+RIGHT = 1
+
+@env.subsim_begin
+def beginf(context):
+    #creates a random variable for the horizontal moving of the ball in each step.
+    context.direction = mcs.DiscreteRandomVariable({
+        #{outcome: probability}
+        LEFT: 0.5,  
+        RIGHT: 0.5
+    })
+
+@env.subsim_step
+def stepf(context, step):
+    #at each step, the ball passes through a row of pegs.
+    context.x += context.direction.evaluate() #move the ball left or right
+
+if __name__ == '__main__':
+    env.run() #Run the simulation
+
+    #Get the time evolution of x over all subsimulations
+    xh = env.get_variable_histories('x') #xh[subsim index, step index]
+
+    #Plot the trajectory of each simulated ball
+    for subsim_index in range(N_SUBSIMULATIONS):
+        plt.plot(xh[subsim_index, :])
+
+    plt.xlabel('steps')
+    plt.ylabel('position')
+    plt.legend()
+    plt.show()
+```
+
+Output:
+![galtonboard_graph](docs/imgs/examples_galtonboard_9_1.png)
