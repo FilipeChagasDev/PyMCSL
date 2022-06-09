@@ -16,6 +16,7 @@ Articles and tutorials
 
    basic_notions_and_ideas
    tutorials/galtonboard
+   tutorials/markovchain
 
 Classes
 -------
